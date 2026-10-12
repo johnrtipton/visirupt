@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://visirupt.com/sitemap.xml
