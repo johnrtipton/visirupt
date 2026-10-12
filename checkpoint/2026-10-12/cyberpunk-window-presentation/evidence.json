@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-12",
+  "human_acceptance": "WASD movement hold/release works; game described as playable",
+  "requested_change": "plain/borderless resizable native window",
+  "source_files": [
+    "/Users/tip/games/scratch/cyberpunk-staged-startup/Sources/App.swift",
+    "/Users/tip/games/scratch/cyberpunk-staged-startup/Sources/Probe.m"
+  ],
+  "window_style": "plain",
+  "window_resizability": "contentMinSize",
+  "default_points": [
+    640,
+    360
+  ],
+  "minimum_points": [
+    640,
+    360
+  ],
+  "scene_resize_behavior": "forward true native container geometry through NSWindow setFrame:display: including native layout, aspect/min size and real resize notifications",
+  "device_build": "passed",
+  "device_acceptance": "Updated plain scene launched; appearance, resize and pointer alignment confirmation pending",
+  "not_claimed": [
+    "immersive VR",
+    "measured FPS",
+    "extended stability",
+    "simulator gameplay"
+  ],
+  "references": [
+    "https://developer.apple.com/documentation/swiftui/windowstyle/plain",
+    "https://developer.apple.com/documentation/visionos/positioning-and-sizing-windows"
+  ],
+  "deep_strict_signature": "passed",
+  "install_outcome": "success",
+  "launch_outcome": "success",
+  "device_pid": 3353,
+  "plain_first_physical_result": "Looks better, but pointer cannot enter; game fails to start",
+  "pointer_regression_evidence": "plain-pointer-wait-results.json: runD49D09E8-743A-4443-90C2-DF10D6EF73ED WAITING_FOR_NATIVE_POINTER_SAMPLE; native_pointer_state_available=0; engine entrypoint not issued",
+  "interaction_area_test": {
+    "change": "Add black SwiftUI background and rectangular interaction contentShape; retain plain style, resize policy and genuine pointer readiness gate",
+    "device_build": "passed",
+    "deep_strict_signature": "passed",
+    "physical_result": "Human: much better, can play and resize window. Wants improved key bindings and ultimately VR; reports low resolution.",
+    "install_outcome": "success",
+    "launch_outcome": "success",
+    "pid": 3380
+  }
+}

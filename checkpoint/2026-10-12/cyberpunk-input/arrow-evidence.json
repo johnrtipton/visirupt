@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-12",
+  "request": "Map swivel left/right to arrow keys",
+  "interpretation": "Horizontal camera turning; WASD remains walking",
+  "native_key_codes": {
+    "LeftArrow": 123,
+    "RightArrow": 124
+  },
+  "game_mapping": "RightX_Axis gains IK_Left=-1.0 and IK_Right=1.0; existing IK_Pad_RightAxisX retained",
+  "shipped_context_evidence": "Data/r6/config/inputContexts.xml CameraMovement maps CameraX to RightX_Axis. Shipped FreeCam_RightX_Axis already uses same arrows and values.",
+  "configuration_validation": {
+    "original_sha256": "a57bd58879f3846f300ec9c30fc8111890b9d3aeb6b82842dc4070930e0ff48e",
+    "modified_sha256": "52cb6b0eed9f08a7f2838b3baee82c151439f5a88c2e373d12b8470654e53384",
+    "only_change": "Two arrow buttons added to existing horizontal camera axis; original pad binding retained",
+    "original_backup": "/Users/tip/Dropbox/online_projects/ai/games/scratch/cyberpunk-input/inputUserMappings.original-device.xml",
+    "xml_parses": true,
+    "byte_diff_outside_insertion": false
+  },
+  "simulator": {
+    "state": "passed",
+    "count": 95,
+    "arrow_delivery": true,
+    "original_game_code_executed": false
+  },
+  "source_backup": "scratch/cyberpunk-input/inputUserMappings.original-device.xml",
+  "modified_configuration": "scratch/cyberpunk-input/inputUserMappings.arrow-turn.xml",
+  "device_acceptance": "Human confirms arrow turning works well and build is very responsive; combined hold/release and WASD test answered yes.",
+  "integrity_note": "One requested native input configuration is intentionally modified; original raw transfer checksum for that file no longer describes active configuration. Original local game source and all archive binaries remain untouched.",
+  "resolution_test": "1280x720 initial scene in same prepared build; actual drawable still must be measured",
+  "device_build": "passed",
+  "deep_strict_signature": "passed",
+  "install_outcome": "success",
+  "launch_outcome": "success",
+  "device_pid": 3408,
+  "native_configuration_readback": "Byte identical to prepared XML; SHA25652cb6b0eed9f08a7f2838b3baee82c151439f5a88c2e373d12b8470654e53384"
+}

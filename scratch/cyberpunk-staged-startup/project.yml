@@ -1,0 +1,89 @@
+name: CyberpunkStartupFileProbe
+options:
+  deploymentTarget:
+    visionOS: '26.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    ARCHS: arm64
+    ENABLE_DEBUG_DYLIB: NO
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    DEVELOPMENT_TEAM: MSMQA9HS3H
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_ENTITLEMENTS: VirtualAddress.entitlements
+    SWIFT_OBJC_BRIDGING_HEADER: Sources/Probe.h
+    HEADER_SEARCH_PATHS:
+      - $(SRCROOT)/../../cyberpunk-avp/compat/AppKit
+      - $(SRCROOT)/../../cyberpunk-avp/compat/CoreGraphics
+targets:
+  CyberpunkStartupFileProbe:
+    type: application
+    platform: visionOS
+    sources:
+      - path: Sources
+      - path: Diagnostics
+    dependencies:
+      - target: MemoryTrace
+        embed: true
+        codeSign: true
+      - framework: Frameworks/CyberpunkModule.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/Curl.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/Bink.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/HostAdapters.framework
+        embed: true
+        codeSign: true
+      - framework: Frameworks/AppStoreServices.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/GalaxyServices.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/NativeSecurity.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/DisplayBridge.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/IOKitBridge.framework
+        link: false
+        embed: true
+        codeSign: true
+      - framework: Frameworks/MetalBridge.framework
+        link: false
+        embed: true
+        codeSign: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: local.games.cyberpunk.assetreceiver
+  MemoryTrace:
+    type: framework
+    platform: visionOS
+    sources:
+      - path: Trace
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: local.games.cyberpunk.memorytraceframework
+        SWIFT_OBJC_BRIDGING_HEADER: ''
+        CODE_SIGN_ENTITLEMENTS: ''
+        OTHER_LDFLAGS:
+          - '-Wl,-reexport_library,$(SDKROOT)/usr/lib/libSystem.tbd'
+schemes:
+  CyberpunkStartupFileProbe:
+    build:
+      targets:
+        CyberpunkStartupFileProbe: all

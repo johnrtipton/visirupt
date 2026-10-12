@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-12",
+  "milestone": "HUMAN_CONFIRMED_NATIVE_GAMEPLAY_ON_M2_VISION_PRO",
+  "human_observation": "Scrolling works well; in gameplay, can fire and look around and play, but does not know how to walk",
+  "validated_scope": [
+    "Native game graphics beyond intro/terms",
+    "Keyboard and primary mouse input",
+    "Trackpad scroll accepted",
+    "Aiming and firing in actual gameplay"
+  ],
+  "unvalidated_scope": [
+    "Measured FPS/frame times",
+    "Extended gameplay stability",
+    "Stereo immersive VR",
+    "Controller input"
+  ],
+  "movement_root_cause": "Only Space/Return/Escape mapped in native keyboard callback; WASD fell through to UIKit",
+  "movement_mapping": {
+    "W": 13,
+    "A": 0,
+    "S": 1,
+    "D": 2
+  },
+  "mapping_reference": "Local macOS SDK Carbon/HIToolbox Events.h kVK_ANSI_W/A/S/D",
+  "simulator": {
+    "state": "passed",
+    "count": 94,
+    "original_game_code_executed": false,
+    "wasd_mapping": true,
+    "cancelled_release": 1
+  },
+  "device_update": "Movement build installed and launched; physical WASD acceptance pending",
+  "asset_integrity": "Same receiver ID, no archive changes, never uninstall",
+  "device_build": "passed",
+  "deep_strict_signature": "passed",
+  "install_outcome": "success",
+  "launch_outcome": "success",
+  "device_pid": 3339,
+  "movement_physical_acceptance": "Human confirmed held WASD movement starts and stops on release; describes game as playable."
+}

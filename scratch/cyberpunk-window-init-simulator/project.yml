@@ -1,0 +1,90 @@
+name: CyberpunkWindowInitSimulator
+options:
+  deploymentTarget:
+    visionOS: '26.0'
+settings:
+  base:
+    ARCHS: arm64
+    SWIFT_VERSION: '5.0'
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    HEADER_SEARCH_PATHS:
+      - $(SRCROOT)/../../cyberpunk-avp/compat/AppKit
+      - $(SRCROOT)/../../cyberpunk-avp/compat/CoreGraphics
+targets:
+  HostAdapters:
+    type: framework
+    platform: visionOS
+    sources:
+      - path: ../../cyberpunk-avp/compat/GameKit
+      - path: ../../cyberpunk-avp/compat/AppKit
+      - path: ../../cyberpunk-avp/compat/Darwin
+      - path: ../../cyberpunk-avp/compat/CoreGraphics
+      - path: ../../cyberpunk-avp/compat/IOKit
+      - path: ../../cyberpunk-avp/compat/Metal
+    dependencies:
+      - sdk: UIKit.framework
+      - sdk: QuartzCore.framework
+      - sdk: CoreGraphics.framework
+      - sdk: IOKit.framework
+      - sdk: Metal.framework
+    settings:
+      base:
+        DEFINES_MODULE: NO
+        PRODUCT_BUNDLE_IDENTIFIER: local.games.cyberpunk.hostuiadapters
+        OTHER_LDFLAGS:
+          - '-Wl,-alias,_CPSceneShowDuplicateLowResolutionModes,_kCGDisplayShowDuplicateLowResolutionModes'
+          - '-Wl,-alias,_CPMetalCopyAllDevicesWithObserver,_MTLCopyAllDevicesWithObserver'
+          - '-Wl,-alias,_CPMetalRemoveDeviceObserver,_MTLRemoveDeviceObserver'
+          - '-Wl,-alias,_CPDisplayCreateInfoDictionary,_IODisplayCreateInfoDictionary'
+          - '-Wl,-alias,_CPDisplayGetFloatParameter,_IODisplayGetFloatParameter'
+          - '-Wl,-alias,_CPSceneEventSourceCreate,_CGEventSourceCreate'
+          - '-Wl,-alias,_CPSceneEventSourceSetLocalEventsSuppressionInterval,_CGEventSourceSetLocalEventsSuppressionInterval'
+          - '-Wl,-alias,_CPSceneMainDisplayID,_CGMainDisplayID'
+          - '-Wl,-alias,_CPSceneWarpMouseCursorPosition,_CGWarpMouseCursorPosition'
+          - '-Wl,-alias,_OBJC_CLASS_$_CPGameKitDialogPresenter,_OBJC_CLASS_$_GKDialogController'
+          - '-Wl,-alias,_CPDarwinSyslog,_syslog$DARWIN_EXTSN'
+          - '-Wl,-reexport_framework,CoreGraphics'
+          - '-Wl,-reexport_framework,IOKit'
+          - '-Wl,-reexport_framework,Metal'
+          - '-Wl,-alias,_CPSceneAssociateMouseAndMouseCursorPosition,_CGAssociateMouseAndMouseCursorPosition'
+          - '-Wl,-alias,_CPSceneDisplayBounds,_CGDisplayBounds'
+          - '-Wl,-alias,_CPSceneDisplayCopyAllModes,_CGDisplayCopyAllDisplayModes'
+          - '-Wl,-alias,_CPSceneDisplayCopyMode,_CGDisplayCopyDisplayMode'
+          - '-Wl,-alias,_CPSceneDisplayIOServicePort,_CGDisplayIOServicePort'
+          - '-Wl,-alias,_CPSceneDisplayIsBuiltin,_CGDisplayIsBuiltin'
+          - '-Wl,-alias,_CPSceneDisplayIsInMirrorSet,_CGDisplayIsInMirrorSet'
+          - '-Wl,-alias,_CPSceneModeGetHeight,_CGDisplayModeGetHeight'
+          - '-Wl,-alias,_CPSceneModeGetIOFlags,_CGDisplayModeGetIOFlags'
+          - '-Wl,-alias,_CPSceneModeGetPixelHeight,_CGDisplayModeGetPixelHeight'
+          - '-Wl,-alias,_CPSceneModeGetPixelWidth,_CGDisplayModeGetPixelWidth'
+          - '-Wl,-alias,_CPSceneModeGetRefreshRate,_CGDisplayModeGetRefreshRate'
+          - '-Wl,-alias,_CPSceneModeGetWidth,_CGDisplayModeGetWidth'
+          - '-Wl,-alias,_CPSceneModeIsUsableForGUI,_CGDisplayModeIsUsableForDesktopGUI'
+          - '-Wl,-alias,_CPSceneModeRelease,_CGDisplayModeRelease'
+          - '-Wl,-alias,_CPSceneDisplayModelNumber,_CGDisplayModelNumber'
+          - '-Wl,-alias,_CPSceneDisplayPixelsHigh,_CGDisplayPixelsHigh'
+          - '-Wl,-alias,_CPSceneDisplayPixelsWide,_CGDisplayPixelsWide'
+          - '-Wl,-alias,_CPSceneDisplaySerialNumber,_CGDisplaySerialNumber'
+          - '-Wl,-alias,_CPSceneDisplayVendorNumber,_CGDisplayVendorNumber'
+          - '-Wl,-alias,_CPGetActiveSceneDisplayList,_CGGetActiveDisplayList'
+  AdapterChecks:
+    type: application
+    platform: visionOS
+    sources:
+      - Sources
+      - ../cyberpunk-staged-startup/Diagnostics
+    dependencies:
+      - target: HostAdapters
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: local.games.cyberpunk.windowinitchecks
+        SWIFT_OBJC_BRIDGING_HEADER: Sources/Probe.h
+        ENABLE_DEBUG_DYLIB: NO
+schemes:
+  AdapterChecks:
+    build:
+      targets:
+        AdapterChecks: all

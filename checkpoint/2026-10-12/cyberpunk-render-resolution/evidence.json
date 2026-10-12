@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-12",
+  "physical_acceptance": "Plain black rectangular interaction surface supports gameplay and window resizing",
+  "low_resolution_observation": "Human reports very low resolution",
+  "native_drawable_dimensions": [
+    [
+      640,
+      360
+    ]
+  ],
+  "sampled_game_drawable_records": 50,
+  "latest_native_ui": [
+    {
+      "phase": 2,
+      "window_hidden": false,
+      "metal_layers": [
+        {
+          "bounds": "{{0, 0}, {1414, 795}}",
+          "hidden": false,
+          "device": "Apple M2 GPU",
+          "frame": "{{0, 0}, {1414, 795}}",
+          "drawable_size": "{640, 360}",
+          "pixel_format": 80,
+          "attached_to_superlayer": 1
+        }
+      ],
+      "event": "native_ui_observation",
+      "time": 169273.9509955417,
+      "window_bounds": "{{0, 0}, {1414, 821}}"
+    }
+  ],
+  "interpretation": "Original renderer keeps a 640x360 output drawable while resized layer reaches 1414x795. Saved 1280x720 setting differs from actual drawable; no configured dynamic resolution/upscaling.",
+  "confirmed_limit": "Window resizes presentation/layout; backing render resolution has not followed physical resizing.",
+  "controlled_next_test": "Default initial native scene 1280x720, retaining 640x360 minimum and plain hit area. Verify actual native drawable after launch; setting alone is not proof.",
+  "not_claimed": [
+    "GPU internal render target dimensions",
+    "native per-eye VR resolution",
+    "measured gameplay FPS"
+  ],
+  "vr_next_boundaries": [
+    "Establish clearer native output and quantify performance",
+    "Separate native stereo engine camera/render submission work",
+    "Head pose and controller input integration"
+  ],
+  "physical_test": {
+    "human": "Works well and very responsive",
+    "actual_original_engine_drawable_dimensions": [
+      [
+        1280,
+        720
+      ]
+    ],
+    "sampled_native_drawables": 28,
+    "prior_dimensions": [
+      640,
+      360
+    ],
+    "output_pixel_count_increase": 4,
+    "presentation_still_scales_when_window_enlarged": true,
+    "gameplay_fps_measured": false,
+    "trace": "scratch/cyberpunk-render-resolution/1280-test-presentation.jsonl"
+  }
+}

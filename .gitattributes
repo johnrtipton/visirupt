@@ -1,0 +1,2 @@
+# Patch context preserves the shipped configuration indentation verbatim.
+checkpoint/**/*.patch -whitespace

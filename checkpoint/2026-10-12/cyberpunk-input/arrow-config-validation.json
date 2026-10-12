@@ -1,0 +1,8 @@
+{
+  "original_sha256": "a57bd58879f3846f300ec9c30fc8111890b9d3aeb6b82842dc4070930e0ff48e",
+  "modified_sha256": "52cb6b0eed9f08a7f2838b3baee82c151439f5a88c2e373d12b8470654e53384",
+  "only_change": "Two arrow buttons added to existing horizontal camera axis; original pad binding retained",
+  "original_backup": "/Users/tip/Dropbox/online_projects/ai/games/scratch/cyberpunk-input/inputUserMappings.original-device.xml",
+  "xml_parses": true,
+  "byte_diff_outside_insertion": false
+}

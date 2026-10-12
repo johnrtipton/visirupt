@@ -1,0 +1,11 @@
+--- a/r6/config/inputUserMappings.xml
++++ b/r6/config/inputUserMappings.xml
+@@ -39,6 +39,8 @@
+ 	
+ 	<mapping name="RightX_Axis" type="Axis" >
+         <button id="IK_Pad_RightAxisX" />
++            <button id="IK_Left" val="-1.0" />
++        <button id="IK_Right" val="1.0" />
+     </mapping>
+ 	
+     <mapping name="RightY_Axis" type="Axis" >
