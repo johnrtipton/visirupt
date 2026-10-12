@@ -1,6 +1,6 @@
 # Native Cyberpunk Vision Pro checkpoint — 2026-10-12
 
-Local checkpoint of the experimental Mac 2.3-to-visionOS port. No remote or public distribution is configured.
+Local checkpoint of the experimental Mac 2.3-to-visionOS port. This was initially a local/private checkpoint. The user subsequently authorized publishing the authored source in the public johnrtipton/visirupt repository; game assets and compiled proprietary frameworks remain excluded.
 
 Human confirmed native gameplay on M2 Vision Pro: aiming/firing, WASD movement with release, arrow-key horizontal camera turning, click/drag/trackpad scrolling, and a plain resizable window. Latest native output is 1280x720, up from 640x360; user reports responsive gameplay. FPS, internal render targets and extended stability are not measured. Window resizing enlarges presentation, but backing render resolution remains fixed. Stereo VR and head/controller tracking are not implemented.
 

@@ -91,7 +91,6 @@ metadata:
   name: visirupt-web
   namespace: visirupt
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/enable-access-log: "false"
 spec:
@@ -99,8 +98,6 @@ spec:
   tls:
     - hosts: [visirupt.com]
       secretName: visirupt-tls
-    - hosts: [www.visirupt.com]
-      secretName: visirupt-www-tls
   rules:
     - host: visirupt.com
       http:
@@ -112,6 +109,23 @@ spec:
                 name: visirupt-web
                 port:
                   name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: visirupt-www-redirect
+  namespace: visirupt
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: https://visirupt.com$request_uri
+    nginx.ingress.kubernetes.io/permanent-redirect-code: "308"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-access-log: "false"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [www.visirupt.com]
+      secretName: visirupt-www-tls
+  rules:
     - host: www.visirupt.com
       http:
         paths:
