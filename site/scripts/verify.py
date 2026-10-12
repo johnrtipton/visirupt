@@ -22,3 +22,10 @@ ET.parse(root/'favicon.svg'); ET.parse(root/'sitemap.xml')
 assert 'No public installer is available yet' in (root/'index.html').read_text()
 assert 'Stereo rendering, head tracking' in (root/'index.html').read_text()
 print('PASS: anchors, local assets, SVG/XML, document structure and release-status content')
+
+html = (root/'index.html').read_text()
+assert 'view-angle' not in html
+assert 'https://tiptontek.com/' in p.hrefs
+assert 'https://github.com/johnrtipton/visirupt' in p.hrefs
+assert 'polls-list' in p.ids and 'polls-status' in p.ids
+print('PASS: community polls, top GitHub link, Tiptontek link and slider removal')

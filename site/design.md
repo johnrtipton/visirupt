@@ -8,3 +8,7 @@ Left-aligned editorial hero with one original tilted-window concept visual; quie
 User explicitly requested self-hosted Kubernetes publication; no additional hosted Sites project or credential is created.
 
 User expanded the product direction to native Mac apps as well as games. The hero now says Mac software and presents spatial apps as a broader goal; Cyberpunk remains the only verified prototype, with per-app compatibility explicitly unproven.
+
+## Community interaction update
+
+Replace the viewpoint slider with two real, shared community polls. Keep the fixed concept illustration labeled. Put the GitHub star link in the top navigation as well as developer testing; link Tiptontek in the footer. Polls use real counts, accessible native radio controls and persistent anonymous votes.
