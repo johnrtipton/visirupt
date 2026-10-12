@@ -97,8 +97,10 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    - hosts: [visirupt.com, www.visirupt.com]
+    - hosts: [visirupt.com]
       secretName: visirupt-tls
+    - hosts: [www.visirupt.com]
+      secretName: visirupt-www-tls
   rules:
     - host: visirupt.com
       http:

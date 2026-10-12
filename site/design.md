@@ -6,3 +6,5 @@ Palette: optical blue #2945e8, ink #161c2a, cool paper #f5f7fc, ice #a9e7ff, whi
 Left-aligned editorial hero with one original tilted-window concept visual; quiet evidence section, linear roadmap and an honest developer-testing section. The concept illustration is explicitly labeled and contains no copyrighted game imagery. No generic feature-card grid, fabricated testimonials, download button, signup form or unsupported VR claims. Native windowed gameplay and future stereo VR are separate in the copy.
 
 User explicitly requested self-hosted Kubernetes publication; no additional hosted Sites project or credential is created.
+
+User expanded the product direction to native Mac apps as well as games. The hero now says Mac software and presents spatial apps as a broader goal; Cyberpunk remains the only verified prototype, with per-app compatibility explicitly unproven.
