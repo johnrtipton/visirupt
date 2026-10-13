@@ -5,7 +5,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: '5.0'
-    DEVELOPMENT_TEAM: MSMQA9HS3H
+    DEVELOPMENT_TEAM: ''
     CODE_SIGN_STYLE: Automatic
     GENERATE_INFOPLIST_FILE: YES
     INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
@@ -22,7 +22,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: local.games.cyberpunk.assetreceiver
     info:
-      path: ../../scratch/cyberpunk-resumable/Info.plist
+      path: GeneratedInfo.plist
       properties:
         NSLocalNetworkUsageDescription: Download and verify game asset chunks from your Mac on the local network.
         NSAppTransportSecurity:

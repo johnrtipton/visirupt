@@ -49,3 +49,8 @@ let partial = try fm.contentsOfDirectory(at: corruptRoot.appendingPathComponent(
 try Data(repeating: 0, count: first.count).write(to: partial)
 try rejected("corrupt committed partial chunk") { _ = try AssetReceiver(root: corruptRoot, manifest: AssetManifest(files: [small])).status(path: small.relative_path) }
 print("ALL RESUME CORE CHECKS PASSED")
+do {
+    _ = try AssetReceiver(root: root.appendingPathComponent("empty"), manifest: AssetManifest(files: []))
+    print("FAIL empty manifest was accepted")
+    exit(1)
+} catch { print("PASS empty manifest rejected before receiver initialization") }

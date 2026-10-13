@@ -1,88 +1,106 @@
 #!/usr/bin/env python3
-"""Transfer original data in verified chunks; receiver checkpoints are authoritative."""
-import argparse, hashlib, json, pathlib, subprocess, time, uuid
-ROOT = pathlib.Path(__file__).resolve().parent
-DEVICE = '36A3F463-4C46-5BE2-9AF8-F3EB3A2F4B45'
-BUNDLE = 'local.games.cyberpunk.assetreceiver'
-WORK = ROOT.parents[1] / 'scratch/cyberpunk-resumable/transfer'
-WORK.mkdir(parents=True, exist_ok=True)
+"""Explicit-device transfer in verified packets with native writer ownership."""
+import argparse
+import hashlib
+import json
+import pathlib
+import sys
+import time
+import uuid
+ROOT=pathlib.Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT.parents[1]))
+from tools.visirupt_pipeline.core import PipelineError
+from tools.visirupt_pipeline.runner import run_tool
+from tools.visirupt_pipeline.workspace import private_directory,atomic_json,checked_workspace
+from tools.visirupt_pipeline.transfer import source_file,device_writer_lock,owner_id,verify_native_completion
+BUNDLE='local.games.cyberpunk.assetreceiver'
 
-def command(label, args):
-    log = WORK / (label + '.log')
-    with log.open('w') as output:
-        p = subprocess.run(['xcrun', 'devicectl'] + args + ['--timeout', '120', '--json-output', str(WORK / (label + '.json'))], stdout=output, stderr=subprocess.STDOUT, timeout=150)
-    if p.returncode:
-        raise RuntimeError(f'{label} failed; progress on device is retained. See {log}')
-
-def exchange(request, payload=None):
-    request['request_id'] = str(uuid.uuid4())
-    packet = WORK / request['request_id']; packet.mkdir()
-    if payload is not None:
-        local = packet / 'payload.bin'; local.write_bytes(payload)
-        command('copy-payload', ['device','copy','to','--device',DEVICE,'--domain-type','appDataContainer','--domain-identifier',BUNDLE,'--source',str(local),'--destination','Documents/TransferInbox/payload.bin'])
-    local = packet / 'request.json'; local.write_text(json.dumps(request))
-    command('copy-request', ['device','copy','to','--device',DEVICE,'--domain-type','appDataContainer','--domain-identifier',BUNDLE,'--source',str(local),'--destination','Documents/TransferInbox/request.json'])
-    deadline = time.monotonic() + 600
-    while time.monotonic() < deadline:
-        response = packet / 'receipt.json'
-        try:
-            command('fetch-receipt', ['device','copy','from','--device',DEVICE,'--domain-type','appDataContainer','--domain-identifier',BUNDLE,'--source','Documents/transfer-results.json','--destination',str(response)])
-        except (RuntimeError, subprocess.TimeoutExpired):
+class TransferClient:
+    def __init__(self,device,work,manifest,owner,timeout=600,transport="foreground"):
+        self.device=device;self.work=pathlib.Path(work);self.manifest=pathlib.Path(manifest);self.owner=owner;self.timeout=timeout;self.transport=transport
+        private_directory(self.work)
+    def command(self,label,args):
+        receipt=self.work/(label+'-'+uuid.uuid4().hex+'.json')
+        run_tool(['xcrun','devicectl',*args,'--timeout','120','--json-output',str(receipt)],self.work,self.work/(label+'.log'),150)
+        if not receipt.is_file():raise PipelineError('TOOL_FAILED','device receipt missing')
+        value=json.loads(receipt.read_text())
+        if value.get('error') or value.get('outcome')=='failed':raise PipelineError('TOOL_FAILED','device operation failed')
+        return value
+    def copy_to(self,source,destination):
+        return self.command('copy-to',['device','copy','to','--device',self.device,'--domain-type','appDataContainer','--domain-identifier',BUNDLE,'--source',str(source),'--destination',destination])
+    def copy_from(self,source,destination):
+        return self.command('copy-from',['device','copy','from','--device',self.device,'--domain-type','appDataContainer','--domain-identifier',BUNDLE,'--source',source,'--destination',str(destination)])
+    def exchange(self,request,payload=None):
+        request=dict(request,request_id=str(uuid.uuid4()),owner_id=self.owner,transport=self.transport)
+        packet=self.work/request['request_id'];private_directory(packet)
+        if payload is not None:
+            local=packet/'payload.bin'
+            with local.open('xb') as output:output.write(payload)
+            local.chmod(0o600)
+            request['bytes']=len(payload)
+            self.copy_to(local,'Documents/TransferInbox/payload.bin')
+        atomic_json(packet/'request.json',request)
+        self.copy_to(packet/'request.json','Documents/TransferInbox/request.json')
+        deadline=time.monotonic()+self.timeout
+        while time.monotonic()<deadline:
+            response=packet/'receipt.json'
+            try:
+                self.copy_from('Documents/transfer-results.json',response)
+                result=json.loads(response.read_text())
+            except (OSError,ValueError):
+                time.sleep(2);continue
+            if result.get('request_id')==request['request_id']:
+                if result.get('state')!='accepted':raise PipelineError('DEVICE_BUSY' if request['action'].startswith('lease_') else 'INCOMPLETE_TRANSFER','native receiver rejected request')
+                if payload is not None:(packet/'payload.bin').unlink()
+                return result
             time.sleep(2)
-            continue
-        result = json.loads(response.read_text())
-        if result.get('request_id') == request['request_id']:
-            if result.get('state') != 'accepted': raise RuntimeError('Receiver rejected packet: '+str(result.get('error')))
-            if payload is not None: (packet / 'payload.bin').unlink()
-            return result
-        time.sleep(2)
-    raise RuntimeError('Receiver did not acknowledge packet; keep its window open and retry. Saved chunks remain on device.')
+        raise PipelineError('INCOMPLETE_TRANSFER','native acknowledgement timeout; committed bytes retained')
+    def acquire(self):return self.exchange({'action':'lease_acquire'})
+    def release(self):return self.exchange({'action':'lease_release'})
+    def status(self):
+        self.acquire()
+        return self.exchange({'action':'status'})
+    def transfer(self,asset_root,chunk_bytes):
+        manifest=json.loads(self.manifest.read_text());snapshot=self.status();status=snapshot['files']
+        if set(status)!={a['relative_path'] for a in manifest['files']}:raise PipelineError('INCOMPLETE_TRANSFER','manifest differs from native receiver')
+        needed=sum(a['bytes']-status[a['relative_path']]['offset'] for a in manifest['files'])
+        if needed<0 or snapshot.get('available_disk_bytes',0)<needed+2*chunk_bytes+512*1024*1024:raise PipelineError('INCOMPLETE_TRANSFER','native capacity')
+        for asset in manifest['files']:
+            name=asset['relative_path'];cp=status[name]
+            if cp.get('source_sha256')!=asset['sha256']:raise PipelineError('INCOMPLETE_TRANSFER','native source identity')
+            if cp.get('verified'):
+                if cp['offset']!=asset['bytes']:raise PipelineError('INCOMPLETE_TRANSFER','native size')
+                continue
+            source=source_file(asset_root,asset,self.manifest)
+            if source.stat().st_size!=asset['bytes']:raise PipelineError('SOURCE_CHANGED')
+            offset=cp['offset']
+            with source.open('rb') as stream:
+                stream.seek(offset)
+                while offset<asset['bytes']:
+                    self.acquire()
+                    payload=stream.read(min(chunk_bytes,asset['bytes']-offset))
+                    if not payload:raise PipelineError('SOURCE_CHANGED')
+                    response=self.exchange({'action':'accept','path':name,'offset':offset,'chunk_sha256':hashlib.sha256(payload).hexdigest()},payload)
+                    cp=response['checkpoint']
+                    if cp['offset']!=offset+len(payload):raise PipelineError('INCOMPLETE_TRANSFER','native checkpoint offset')
+                    offset=cp['offset']
+            if cp.get('verified') is not True:raise PipelineError('INCOMPLETE_TRANSFER','native whole-file hash')
+        result=self.status();verify_native_completion(result,manifest)
+        atomic_json(self.work/'native-completion.json',result)
+        self.release()
+        return result
 
-def transfer(mode, asset_root, chunk_bytes):
-    manifest = json.loads((ROOT/'Resources/asset-manifest.json').read_text())['files']
-    snapshot = exchange({'action':'status'})
-    status = snapshot['files']
-    files = [a for a in manifest if a['relative_path'].startswith('Data/')] if mode == 'assets' else [a for a in manifest if a['relative_path']=='Probe/test-data.bin']
-    if mode == 'assets':
-        needed = sum(a['bytes'] - status[a['relative_path']]['offset'] for a in files)
-        if snapshot['available_disk_bytes'] < needed + 2 * chunk_bytes + 512 * 1024 * 1024:
-            raise RuntimeError('Insufficient headset free space for remaining assets and temporary chunks')
-    report = {'mode':mode,'stage':'transferring','files':[],'game_code_executed':False}
-    for asset in files:
-        name = asset['relative_path']; cp = status[name]
-        if cp['source_sha256'] != asset['sha256']: raise RuntimeError('Receiver source manifest differs')
-        if cp['verified']:
-            report['files'].append({'path':name,'state':'already_verified','bytes':cp['offset']}); continue
-        if mode == 'probe-first' and cp['offset'] != 0: raise RuntimeError('First-phase probe requires an unused fixture')
-        if mode == 'probe-finish' and cp['offset'] != 1048576: raise RuntimeError('Restart did not retain the expected first MiB')
-        source = ROOT.parents[1]/'scratch/cyberpunk-resumable/probe-original.bin' if mode.startswith('probe-') else asset_root/name
-        source = source.resolve()
-        if mode=='assets' and not source.is_relative_to(asset_root.resolve()): raise RuntimeError('Asset path escapes source root')
-        if source.stat().st_size != asset['bytes']: raise RuntimeError('Source asset size changed')
-        offset = cp['offset']; stop = 1048576 if mode=='probe-first' else asset['bytes']
-        with source.open('rb') as stream:
-            stream.seek(offset)
-            while offset < stop:
-                payload = stream.read(min(chunk_bytes,stop-offset))
-                if not payload: raise RuntimeError('Source ended early')
-                response = exchange({'action':'accept','path':name,'offset':offset,'chunk_sha256':hashlib.sha256(payload).hexdigest()},payload)
-                cp = response['checkpoint']
-                if cp['offset'] != offset+len(payload): raise RuntimeError('Receiver offset does not match verified payload')
-                offset=cp['offset']
-                report['current']={'path':name,'verified_offset':offset,'file_complete':cp['verified']}
-                (WORK/'progress.json').write_text(json.dumps(report,indent=2)+'\n')
-        if mode!='probe-first' and not cp['verified']: raise RuntimeError('Complete original SHA256 not verified')
-        report['files'].append({'path':name,'verified_offset':offset,'file_complete':cp['verified']})
-    report['stage']='phase_complete'
-    (WORK/('result-'+mode+'.json')).write_text(json.dumps(report,indent=2)+'\n')
-    print(json.dumps(report,indent=2))
-
-if __name__=='__main__':
-    parser=argparse.ArgumentParser()
-    parser.add_argument('mode',choices=['probe-first','probe-finish','assets'])
-    parser.add_argument('--asset-root',type=pathlib.Path)
-    parser.add_argument('--chunk-mib',type=int,default=256)
-    args=parser.parse_args()
-    if not 1<=args.chunk_mib<=256: parser.error('chunk size must be between 1 and 256 MiB')
-    if args.mode=='assets' and args.asset_root is None: parser.error('--asset-root is required')
-    transfer(args.mode,args.asset_root,args.chunk_mib*1024*1024)
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('mode',choices=['assets'])
+    p.add_argument('--device',required=True);p.add_argument('--work',type=pathlib.Path,required=True)
+    p.add_argument('--manifest',type=pathlib.Path,required=True);p.add_argument('--asset-root',type=pathlib.Path,required=True)
+    p.add_argument('--chunk-mib',type=int,default=256)
+    args=p.parse_args()
+    if not 1<=args.chunk_mib<=256:p.error('chunk size must be 1..256 MiB')
+    checked_workspace(args.work,[ROOT.parents[1],args.asset_root])
+    with device_writer_lock(args.device,BUNDLE,args.work):
+        client=TransferClient(args.device,args.work,args.manifest,owner_id(args.work))
+        result=client.transfer(args.asset_root,args.chunk_mib*1024*1024)
+        print(json.dumps(verify_native_completion(result,json.loads(args.manifest.read_text()))))
+if __name__=='__main__':main()

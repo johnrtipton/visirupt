@@ -8,10 +8,11 @@ struct BackgroundProbeConfig: Codable {
     let token: String
     let bytes: Int
     let sha256: String
+    var owner_id: String?
     var asset_path: String?
     var offset: UInt64?
 }
-struct BackgroundTransferPlan: Codable { let jobs: [BackgroundProbeConfig]; let remaining_bytes: UInt64 }
+struct BackgroundTransferPlan: Codable { var owner_id: String?; let jobs: [BackgroundProbeConfig]; let remaining_bytes: UInt64 }
 final class BackgroundProbe: NSObject, ObservableObject, URLSessionDownloadDelegate {
     static let shared = BackgroundProbe()
     @Published var message = "Background download probe idle"
@@ -54,12 +55,21 @@ final class BackgroundProbe: NSObject, ObservableObject, URLSessionDownloadDeleg
         }
         return [try JSONDecoder().decode(BackgroundProbeConfig.self,from:Data(contentsOf:documents.appendingPathComponent("background-probe-config.json")))]
     }
+    private static func localHost(_ host:String?) -> Bool {
+        guard let host else { return false }
+        if host.hasSuffix(".local") { return true }
+        let bytes=host.split(separator:".").compactMap { Int($0) }
+        guard bytes.count==4, bytes.allSatisfy({0...255 ~= $0}) else { return false }
+        return bytes[0]==10 || (bytes[0]==192 && bytes[1]==168) || (bytes[0]==172 && 16...31 ~= bytes[1])
+    }
     private func validate(_ r: BackgroundProbeConfig) throws -> BackgroundProbeConfig {
-        guard UUID(uuidString:r.request_id) != nil, let url=URL(string:r.url), url.scheme=="http", url.host?.hasSuffix(".local")==true,
+        guard UUID(uuidString:r.request_id) != nil, let url=URL(string:r.url), url.scheme=="http", Self.localHost(url.host),
               url.port==8875, (url.path=="/probe" || url.path=="/asset/"+r.request_id), r.bytes > 0, r.bytes <= 256*1024*1024,
               r.token.count>=32, r.sha256.count==64, r.sha256.allSatisfy({ "0123456789abcdef".contains($0) }) else {
             throw ReceiverError.invalid("Invalid background transfer configuration")
         }
+        guard let owner=r.owner_id else { throw ReceiverError.invalid("Writer identity missing") }
+        try WriterLease(documents:documents).validate(owner:owner,transport:"background",background:WriterLease.background(documents:documents))
         if let path=r.asset_path, let offset=r.offset {
             let m=try JSONDecoder().decode(AssetManifest.self,from:Data(contentsOf:Bundle.main.url(forResource:"asset-manifest",withExtension:"json")!))
             guard let a=m.files.first(where:{$0.relative_path==path}), offset<=a.bytes, UInt64(r.bytes)<=a.bytes-offset else { throw ReceiverError.invalid("Invalid archive range") }
@@ -128,11 +138,16 @@ final class BackgroundProbe: NSObject, ObservableObject, URLSessionDownloadDeleg
                 } else {
                     let command=documents.appendingPathComponent("TransferInbox/request.json")
                     guard !FileManager.default.fileExists(atPath:command.path) else { throw ReceiverError.invalid("Receiver inbox busy; downloaded file retained") }
-                    let request=TransferRequest(request_id:config.request_id,action:"background_accept",path:path,offset:offset,chunk_sha256:config.sha256)
+                    let request=TransferRequest(request_id:config.request_id,action:"background_accept",path:path,offset:offset,chunk_sha256:config.sha256,owner_id:config.owner_id,bytes:UInt64(config.bytes))
                     try JSONEncoder().encode(request).write(to:command,options:.atomic)
                 }
                 report("download_hash_verified_pending_commit",config:config,extra:["bytes":config.bytes,"sha256":config.sha256,"path":path,"offset":offset])
-            } else { report("complete_hash_verified",config:config,extra:["bytes":config.bytes,"sha256":config.sha256]) }
+            } else {
+                let receipts=documents.appendingPathComponent("BackgroundReceipts")
+                try FileManager.default.createDirectory(at:receipts,withIntermediateDirectories:true)
+                try JSONSerialization.data(withJSONObject:["request_id":config.request_id,"state":"accepted"],options:[]).write(to:receipts.appendingPathComponent(config.request_id+".json"),options:.atomic)
+                report("complete_hash_verified",config:config,extra:["bytes":config.bytes,"sha256":config.sha256])
+            }
         } catch { report("failed",config:try? config(for:downloadTask.taskDescription),extra:["error":String(describing:error)]) }
     }
     func urlSession(_ session:URLSession,task:URLSessionTask,didCompleteWithError error:Error?) {

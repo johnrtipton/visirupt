@@ -14,8 +14,10 @@ final class ReceiverWorker: ObservableObject {
     init() {
         queue.async {
             do {
-                let manifestURL = Bundle.main.url(forResource: "asset-manifest", withExtension: "json")!
-                let manifest = try JSONDecoder().decode(AssetManifest.self, from: Data(contentsOf: manifestURL))
+                guard let manifestURL = Bundle.main.url(forResource: "asset-manifest", withExtension: "json") else { throw ReceiverError.invalid("Manifest resource missing") }
+                let manifestData = try Data(contentsOf: manifestURL)
+                guard manifestData.count <= 8 * 1024 * 1024 else { throw ReceiverError.invalid("Manifest resource too large") }
+                let manifest = try JSONDecoder().decode(AssetManifest.self, from: manifestData)
                 let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
                 var root = support.appendingPathComponent("GameData")
                 self.receiver = try AssetReceiver(root: root, manifest: manifest)
@@ -51,6 +53,8 @@ final class ReceiverWorker: ObservableObject {
             let payload=documents.appendingPathComponent("BackgroundProbe/"+job.request_id+".bin")
             let receipt=receipts.appendingPathComponent(job.request_id+".json")
             guard FileManager.default.fileExists(atPath:payload.path), !FileManager.default.fileExists(atPath:receipt.path) else { continue }
+            guard let owner=plan.owner_id, job.owner_id==owner else { continue }
+            do { try WriterLease(documents:documents).validate(owner:owner,transport:"background",background:WriterLease.background(documents:documents)) } catch { continue }
             var result: [String:Any]=["request_id":job.request_id,"path":path,"game_code_executed":false]
             do {
                 let old=try cache[path] ?? receiver.status(path:path)
@@ -83,18 +87,30 @@ final class ReceiverWorker: ObservableObject {
         lastRequest = request.request_id
         var result: [String: Any] = ["request_id": request.request_id, "game_code_executed": false]
         do {
-            if request.action == "status" {
+            let lease=WriterLease(documents:documents)
+            let background=WriterLease.background(documents:documents)
+            if request.action == "lease_status" {
+                result["lease"] = try lease.status(owner:request.owner_id)
+            } else if request.action == "lease_acquire", let owner=request.owner_id {
+                try lease.acquire(owner:owner,transport:request.transport ?? "",background:background)
+            } else if request.action == "lease_release", let owner=request.owner_id {
+                try lease.release(owner:owner,background:background)
+            } else if request.action == "status", let owner=request.owner_id {
+                try lease.validate(owner:owner,background:background)
                 self.publish("Verifying saved transfer progress")
                 cache = [:]
                 for path in receiver.manifest.keys.sorted() { cache[path] = try receiver.status(path: path) }
                 result["files"] = try JSONSerialization.jsonObject(with: JSONEncoder().encode(cache))
                 result["available_disk_bytes"] = try receiver.availableBytes()
-            } else if (request.action == "accept" || request.action == "background_accept"), let path = request.path, let offset = request.offset, let hash = request.chunk_sha256 {
+            } else if (request.action == "accept" || request.action == "background_accept"), let path = request.path, let offset = request.offset, let hash = request.chunk_sha256, let owner=request.owner_id, let bytes=request.bytes {
+                try lease.validate(owner:owner,transport:request.action=="background_accept" ? "background" : "foreground",background:background)
+                guard let asset=receiver.manifest[path], bytes>0, bytes<=256*1024*1024,
+                      offset<=asset.bytes, bytes<=asset.bytes-offset else { throw ReceiverError.invalid("Invalid request range") }
                 let payload = request.action == "background_accept" ? documents.appendingPathComponent("BackgroundProbe/" + request.request_id + ".bin") : inbox.appendingPathComponent("payload.bin")
                 guard UUID(uuidString: request.request_id) != nil else { throw ReceiverError.invalid("Invalid request ID") }
                 let old = try cache[path] ?? receiver.status(path: path)
                 let cp: AssetCheckpoint
-                if old.verified || old.chunks.contains(where: { $0.offset == offset && $0.sha256 == hash }) {
+                if old.verified || old.chunks.contains(where: { $0.offset == offset && $0.bytes == Int(bytes) && $0.sha256 == hash }) {
                     cp = old // A replay of an already verified chunk is harmless.
                 } else { cp = try receiver.accept(path: path, offset: offset, payload: payload, sha256: hash, previous: old) }
                 cache[path] = cp
