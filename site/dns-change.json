@@ -1,1 +1,0 @@
-{"Comment":"Publish Visirupt website on existing Kubernetes nginx ingress","Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"visirupt.com","Type":"A","TTL":300,"ResourceRecords":[{"Value":"178.156.162.251"}]}},{"Action":"UPSERT","ResourceRecordSet":{"Name":"www.visirupt.com","Type":"A","TTL":300,"ResourceRecords":[{"Value":"178.156.162.251"}]}}]}
