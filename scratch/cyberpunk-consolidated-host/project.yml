@@ -5,7 +5,7 @@ options:
 settings:
   base:
     ARCHS: arm64
-    DEVELOPMENT_TEAM: MSMQA9HS3H
+    DEVELOPMENT_TEAM: ''
     CODE_SIGN_STYLE: Automatic
     GENERATE_INFOPLIST_FILE: YES
     HEADER_SEARCH_PATHS:

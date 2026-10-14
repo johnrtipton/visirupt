@@ -9,6 +9,9 @@ struct TransferRequest: Codable {
     var path: String?
     var offset: UInt64?
     var chunk_sha256: String?
+    var owner_id: String?
+    var transport: String?
+    var bytes: UInt64?
 }
 struct CommittedChunk: Codable { let offset: UInt64; let bytes: Int; let sha256: String }
 struct AssetCheckpoint: Codable {
@@ -24,6 +27,7 @@ final class AssetReceiver {
     let maximumChunkBytes = 256 * 1024 * 1024
     private let fm = FileManager.default
     init(root: URL, manifest: AssetManifest) throws {
+        guard !manifest.files.isEmpty, manifest.files.count <= 10000 else { throw ReceiverError.invalid("Invalid manifest count") }
         self.root = root.standardizedFileURL.resolvingSymlinksInPath()
         var entries: [String: Asset] = [:]
         for a in manifest.files {

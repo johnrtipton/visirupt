@@ -1,0 +1,624 @@
+{
+  "schema_version": 1,
+  "id": "cyberpunk-mac-2.3-2d-v1",
+  "version": 1,
+  "target": {
+    "arch": "arm64",
+    "platform": 11,
+    "minimum": "26.0",
+    "sdk": "27.0"
+  },
+  "inputs": {
+    "CyberpunkModule": {
+      "path": "MacOS/Cyberpunk2077",
+      "sha256": "22c0d58bffe932fd3f78dacf5fe4e0378900b25a1a52d10f376d3e19764a4cd7"
+    },
+    "Bink": {
+      "path": "Frameworks/libBink2MacArm64.dylib",
+      "sha256": "7d2cb4078e4e4da68df40a8f3c50fce79ca3d230a8d66a92f66d8d9bb2a3da6f"
+    },
+    "AppStoreServices": {
+      "path": "Frameworks/libGameServicesAppStore.dylib",
+      "sha256": "eb79ae75b22adf7e923d5bd75f5c51928cfdb392f43ee8de15273ce9e8038891"
+    },
+    "GalaxyServices": {
+      "path": "Frameworks/libREDGalaxy64.dylib",
+      "sha256": "9a2603656e8d5db4cbfcbb2b325c4629c9d0a6b096e1d3ccc97d6c48cbdf0023"
+    }
+  },
+  "curl": {
+    "version": "8.14.1",
+    "archive_sha256": "f4619a1e2474c4bbfedc88a7c2191209c8334b48fa1f4e53fd584cc12e9120dd",
+    "url": "https://curl.se/download/curl-8.14.1.tar.xz"
+  },
+  "game": {
+    "sections": 29,
+    "initializers": 6538,
+    "capacity_changes": [
+      [
+        4295041880,
+        3535798793,
+        3535798345
+      ],
+      [
+        4295041948,
+        3535798537,
+        3535798345
+      ]
+    ]
+  },
+  "routes": {
+    "/System/Library/Frameworks/MetricKit.framework/Versions/A/MetricKit": "/System/Library/Frameworks/MetricKit.framework/MetricKit",
+    "/System/Library/Frameworks/MetalFX.framework/Versions/A/MetalFX": "/System/Library/Frameworks/MetalFX.framework/MetalFX",
+    "/System/Library/Frameworks/GameKit.framework/Versions/A/GameKit": "/System/Library/Frameworks/GameKit.framework/GameKit",
+    "/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore",
+    "/System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox": "/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox",
+    "/System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio": "/System/Library/Frameworks/CoreAudio.framework/CoreAudio",
+    "/System/Library/Frameworks/GameController.framework/Versions/A/GameController": "/System/Library/Frameworks/GameController.framework/GameController",
+    "/System/Library/Frameworks/CoreHaptics.framework/Versions/A/CoreHaptics": "/System/Library/Frameworks/CoreHaptics.framework/CoreHaptics",
+    "/System/Library/Frameworks/AVFAudio.framework/Versions/A/AVFAudio": "/System/Library/Frameworks/AVFAudio.framework/AVFAudio",
+    "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation": "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation",
+    "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation": "/System/Library/Frameworks/Foundation.framework/Foundation",
+    "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit": "@rpath/HostAdapters.framework/HostAdapters",
+    "/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics": "@rpath/DisplayBridge.framework/DisplayBridge",
+    "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit": "@rpath/IOKitBridge.framework/IOKitBridge",
+    "/System/Library/Frameworks/Metal.framework/Versions/A/Metal": "@rpath/MetalBridge.framework/MetalBridge",
+    "/usr/lib/libcurl.4.dylib": "@rpath/Curl.framework/Curl",
+    "@executable_path/../Frameworks/libBink2MacArm64.dylib": "@rpath/Bink.framework/Bink",
+    "@executable_path/../Frameworks/libGameServicesAppStore.dylib": "@rpath/AppStoreServices.framework/AppStoreServices",
+    "@rpath/libREDGalaxy64.dylib": "@rpath/GalaxyServices.framework/GalaxyServices",
+    "/usr/lib/libSystem.B.dylib": "@rpath/MemoryTrace.framework/MemoryTrace"
+  },
+  "assets": [
+    {
+      "relative_path": "Data/archive/mac/content/audio_1_general.archive",
+      "bytes": 198008832,
+      "sha256": "c3ea7cb05cd3bcac5fdf71bebfa966ce6d4ae9231cf382f8546c843d0905a044"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/audio_2_soundbanks.archive",
+      "bytes": 8828301312,
+      "sha256": "5438a3b2ea340e4d444555facbd3ef3bbee78c58ec4de1d642269f426a7e7bb5"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_1_engine.archive",
+      "bytes": 1677709312,
+      "sha256": "dc59b7ef65d447f71a3735b345ede1008c4d641e5cbd33cb412c7f3dace229a1"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_2_mainmenu.archive",
+      "bytes": 327680,
+      "sha256": "f16c4d6adfe27540c1202d05fa307f0da1ddd26d82b6ba64693576076180e94b"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_3_nightcity.archive",
+      "bytes": 8944459776,
+      "sha256": "321ad4c1afbcb491b25c879832e1c9b1394a3022755e6cf8cc24cc7f98fe7818"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_3_nightcity_gi.archive",
+      "bytes": 11865198592,
+      "sha256": "9d47be313d29d2c0643d1ff49fed5fd460847cf9847b56e5cfc765d6d0a9785d"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_3_nightcity_terrain.archive",
+      "bytes": 3046383616,
+      "sha256": "acf7ebde2f93612e84998d15d436044a22236f9f95026b87bac8c7437fa7fba6"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_4_animation.archive",
+      "bytes": 1082613760,
+      "sha256": "5d17a132a5e4eb4b7abc09c78d9c62a7815f5584b81c51bd39e3d53175683377"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_4_appearance.archive",
+      "bytes": 6640025600,
+      "sha256": "82a1dc9f5a10dc6fc52907ff7d1643eb706c1412a184fee284c742478f7484ea"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_4_gamedata.archive",
+      "bytes": 3509108736,
+      "sha256": "c8d8a516550da3c5d359d24a1540a4ec518ef73edbd16a3569684970ed2b6591"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/basegame_5_video.archive",
+      "bytes": 13895094272,
+      "sha256": "a8a7af161792371f9fe90293ab243cfbe7d91b979db722bce1e2f6734c862e78"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/ep1.addcont_keystone",
+      "bytes": 16,
+      "sha256": "b8787df6b59d18563c715caac07806b1d04b93b4a7cbd1bde2205dc057434879"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ar_text.archive",
+      "bytes": 8536064,
+      "sha256": "c97cd687f3f9121bd88aa983cabd37a2c89b531323492a46e110a552d50d97ef"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_cs_text.archive",
+      "bytes": 8019968,
+      "sha256": "87ec0d0a20999595a1f7fe36de827c1f756885a7e7a7fc2bac3cb8b1e7f6e13c"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_de_text.archive",
+      "bytes": 7880704,
+      "sha256": "ceb9a977e693688c127896a2922a99809259797c7dc005c2fbf4759a7e76e22a"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_de_voice.archive",
+      "bytes": 5102432256,
+      "sha256": "e99aca94e3872840f3f9ef580ca405fe7bbc6983b682cddd814a8b611f8d1379"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_en_text.archive",
+      "bytes": 7553024,
+      "sha256": "f473a6ba0c4ecddda4c068c295ad3bf499b42ae8f9e8d264fd8435089f976728"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_en_voice.archive",
+      "bytes": 5001007104,
+      "sha256": "06e75249c8ea1915809a3ee264ad5b1ff56e070758addb01cdab19c53e77619c"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_es-es_text.archive",
+      "bytes": 7708672,
+      "sha256": "4ff5acf7a576d9b88bdae4c0ff0db4b63c1983ad549de65150a8986f336b82c5"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_es-es_voice.archive",
+      "bytes": 5451915264,
+      "sha256": "90a84a6d1d1f287a6cb45c62c073a09e2847001034d620521c26b8ae66832d12"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_es-mx_text.archive",
+      "bytes": 7680000,
+      "sha256": "c4cc58dc70a651cd6c813462b4cefc200e97b84055c02df7ba2951a4e19e095c"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_fr_text.archive",
+      "bytes": 7958528,
+      "sha256": "e3b3aeb33f73e406e2ed22fc2bbf33dd87fa2c226e7b6070383726bcde21f91b"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_fr_voice.archive",
+      "bytes": 5020176384,
+      "sha256": "18bb15486bd043d2b651a6494858750b30a87bac3e2c40599626071233d974da"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_hu_text.archive",
+      "bytes": 7999488,
+      "sha256": "6b474cafd2cd08d100a4ca6aa6468a71ceb9a1f21e67a6728dc7e71b7e8e7a67"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_it_text.archive",
+      "bytes": 7585792,
+      "sha256": "7c58ed96ad0980a9068832611b17ae7f8e40a7dfc8923540c5bd2c7d521f58fe"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_it_voice.archive",
+      "bytes": 5202239488,
+      "sha256": "d08ce685de75ea5ed0a8b9fdf967263692757819a31e033ca60b973ee007b71f"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ja_text.archive",
+      "bytes": 7929856,
+      "sha256": "7cb7b505323ac6a3f51bba8bf42b69a53060782a7b44f2f574fc70176803125d"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ja_voice.archive",
+      "bytes": 4892131328,
+      "sha256": "7a2b342130d5cab45c2cb1ff5483a0c1727734a0b237aa2abba5b7fea2442572"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ko_text.archive",
+      "bytes": 7991296,
+      "sha256": "d3ef8c5cf5732ad887d3e2a2bb41a159b3fada37dbb27885775b4500ef1be658"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ko_voice.archive",
+      "bytes": 5022396416,
+      "sha256": "552d3e413660c9e66b68ae5408831d6a7834bca8b4953218eb5884a410b642e6"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_pl_text.archive",
+      "bytes": 7778304,
+      "sha256": "57eae6be3e5ef09ccd0a04a1d2f5599e58b68c594a77343e1de3970b55323288"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_pl_voice.archive",
+      "bytes": 4897189888,
+      "sha256": "0af668f2af3927579479d20880ce6e975195fedc6bbc48a0e2b151d691b58692"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_pt_text.archive",
+      "bytes": 7675904,
+      "sha256": "3189750f8f8f64f9b6dcb876ba44a20a06d213f96644762fc9e0b976687ef0be"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_pt_voice.archive",
+      "bytes": 5140459520,
+      "sha256": "f9b2d13288c74d8b878c68071b2b5d695fae756b1a6c442b345cce03b93e1300"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ru_text.archive",
+      "bytes": 8433664,
+      "sha256": "1fdaa08a1123674e15b5bc86065b571ac371c22086378126236da37858ec64c9"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ru_voice.archive",
+      "bytes": 5381836800,
+      "sha256": "cf9e8aa5bad4bc58c1093d88f33539989bca7b5122034f79397a9a08d957cda7"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_th_text.archive",
+      "bytes": 8609792,
+      "sha256": "bd7b6d7e1c29bcbd7819926612f02012aa5d754db00370627dbdaccd2384edbc"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_tr_text.archive",
+      "bytes": 7729152,
+      "sha256": "6bffb55028719d28df838a090ab5e33e91c07bb7fd9b54f139680adf2b5ee5b9"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_ua_text.archive",
+      "bytes": 8646656,
+      "sha256": "cec25e030f83d9bfecaac039fff6ac12b573495a4095fd23adb8d799de352ba3"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_zh-cn_text.archive",
+      "bytes": 7790592,
+      "sha256": "d449e37e7eb7992d56a54a79fbab8523eff3e14f24d7e2e286f73b03fe85b938"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_zh-cn_voice.archive",
+      "bytes": 4892688384,
+      "sha256": "0edcf07018a783430dc3abcd77ff3256119d04ff5316b752cf54bf17aee73c47"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/lang_zh-tw_text.archive",
+      "bytes": 7663616,
+      "sha256": "9ee8aec054eec2e443c7f3ce6d89f4f36107b56102c57183ae4a668e819440c3"
+    },
+    {
+      "relative_path": "Data/archive/mac/content/memoryresident_1_general.archive",
+      "bytes": 14966784,
+      "sha256": "bcd29ac4a4a013f9c3919d9ef7d82a8574b7447b840fdf424b8571a7512c4928"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/audio_1_general.archive",
+      "bytes": 8716288,
+      "sha256": "3780ddd665c77e969629731a49e7fbd55e909ca4e8e0d2dd4d578364d3bfd95d"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/ep1.addcont_keystone",
+      "bytes": 16,
+      "sha256": "b8787df6b59d18563c715caac07806b1d04b93b4a7cbd1bde2205dc057434879"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/ep1_1_nightcity.archive",
+      "bytes": 5731647488,
+      "sha256": "ed7231834d823ba33a35f9d7a6e3c90f0beb8dc6d2114883c06006f968826bcb"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/ep1_1_nightcity_gi.archive",
+      "bytes": 1491521536,
+      "sha256": "95bcf2acff60e82edd10bd25bf3cc7f70eac4278e977d0603bf988602ab9c6ef"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/ep1_1_nightcity_terrain.archive",
+      "bytes": 8196096,
+      "sha256": "9864f7f2183200ef5972c928c3bdc334bd909f6bbbf8b39bcb8ee53c991a4049"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/ep1_2_gamedata.archive",
+      "bytes": 15514304512,
+      "sha256": "4b7b626ff4e3a5dec2041fc98649f3bfd85b6877919be1ce4a179d52854c599f"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ar_text.archive",
+      "bytes": 2514944,
+      "sha256": "c0895defe4ccd627a3e8e37bf3b6649babf1977b3462068a3126bb2eb199733b"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_cs_text.archive",
+      "bytes": 2383872,
+      "sha256": "7f776051c1901ab57cf909f020f165c40a563b88ac7b8ecc11801c0c641c5804"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_de_text.archive",
+      "bytes": 2330624,
+      "sha256": "0724787b372c4d59f29e30ed72e6956ae5128665ca0bbcf9120078d05c01c77c"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_de_voice.archive",
+      "bytes": 2031439872,
+      "sha256": "936ff5b01d4eb2f2073ec4a1d9541da62c744edfbd37625aa10a9d5eda9a6613"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_en_text.archive",
+      "bytes": 2244608,
+      "sha256": "3e8fee51c5fba781e2b5177f3b4f8d578595e6541d94c1dfc4eee7933f5d4d8a"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_en_voice.archive",
+      "bytes": 1650081792,
+      "sha256": "4fd9db60a71a636847a5b817b3f864aec52a369e62a2b9dbb5d2d66b8c24907d"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_es-es_text.archive",
+      "bytes": 2293760,
+      "sha256": "815e853931a3a0f36f3d864655753f4b7cc28dc0e1840e54dc4863555cfb09ef"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_es-es_voice.archive",
+      "bytes": 1777303552,
+      "sha256": "673029c7a075c00e5030454e856900a68406526638602ff55a979ee9eaf3c281"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_es-mx_text.archive",
+      "bytes": 2281472,
+      "sha256": "86ad0a4fe66571ab8c4e221c22e476e352a67c1c2b5ccf578f447580ba105db2"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_fr_text.archive",
+      "bytes": 2375680,
+      "sha256": "28e0d8bf62cb0d39add48cbf5532c1fdf4953a17e2b09c16f63a691824cb7118"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_fr_voice.archive",
+      "bytes": 1697476608,
+      "sha256": "54c96cbc028910761fc9d3b18117efacbe861b75153795c35276de02d0c03787"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_hu_text.archive",
+      "bytes": 2355200,
+      "sha256": "a34bc01d05fe2de3ca202a46e485fd42451f9f5169403c5bc99ddce8c7587546"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_it_text.archive",
+      "bytes": 2240512,
+      "sha256": "b182bd0d352f2a17333f71672665e24184d336f8ea6a1661663ae8a9cb835e43"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_it_voice.archive",
+      "bytes": 1713192960,
+      "sha256": "bf1efc7816583a6c18d5c6c7cf66e3e1bb771f19af659a6f59843989d77d4514"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ja_text.archive",
+      "bytes": 2375680,
+      "sha256": "c818b7da49ef1f0d1bb55cf620b5e77455178b3114facd746008b60d620c950b"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ja_voice.archive",
+      "bytes": 1884913664,
+      "sha256": "c347c89b7784c1faddf77360347e961f47efb72233812321e5b0fe54279d5c4e"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ko_text.archive",
+      "bytes": 2306048,
+      "sha256": "1978a48a41112f893ec21abe0ce0d1e0a31aed3a022891a2e30ca2c7565f2ba0"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ko_voice.archive",
+      "bytes": 1642663936,
+      "sha256": "94145a8d0bd29775caff3936d6ea784945272536d452dea0b2b67c7980f5da4a"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_pl_text.archive",
+      "bytes": 2297856,
+      "sha256": "3621b25aa126c4e53e6973508ee10e8631675e854d6378682bc590a55f5f17cf"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_pl_voice.archive",
+      "bytes": 1768161280,
+      "sha256": "fee2c4b29d622e5addf0a179841b59dfdb7369614b23ba604cc17a90fc6a4a76"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_pt_text.archive",
+      "bytes": 2285568,
+      "sha256": "b47386da3be70af07e205450648ada2704bb269932b5f5f1c192e226fb86a246"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_pt_voice.archive",
+      "bytes": 1801605120,
+      "sha256": "b0bafe524bff86d3994ae4108ea9862c5ef383407921df0df6b2720644b7dbfc"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ru_text.archive",
+      "bytes": 2486272,
+      "sha256": "33b444766cd5892d033c10663aa51f65bf2d02254e4874d84022abf5179f66db"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ru_voice.archive",
+      "bytes": 1596674048,
+      "sha256": "c8ef552981b46551a6097be1ad5d3d5c6eda4805f4175fea463cf765f9296293"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_th_text.archive",
+      "bytes": 2580480,
+      "sha256": "e7b2467fde1bcbe2678a4b0429e661fad6f77030a61ccd10b88e65656bec4d7c"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_tr_text.archive",
+      "bytes": 2273280,
+      "sha256": "d336207aa8b53bccf05a2fe12d8f515a00e5add7079aefb49d207c6c6707962f"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_ua_text.archive",
+      "bytes": 2543616,
+      "sha256": "1299ac5163daab7b1b5bf9364cdc2d4b7647e903d022c1e39903b1355c099767"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_zh-cn_text.archive",
+      "bytes": 2285568,
+      "sha256": "8d4f94b34b8283a0f3e6d49a6860c110c2d014523cd29172b17d9a243bb6e69e"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_zh-cn_voice.archive",
+      "bytes": 1852952576,
+      "sha256": "ccfec1f013a4e83a537577961074a4afd995755cf41bd82994fa0e1f0dbe1e76"
+    },
+    {
+      "relative_path": "Data/archive/mac/ep1/lang_zh-tw_text.archive",
+      "bytes": 2265088,
+      "sha256": "33cc45f4d8f477023b989f2f1aaafe937a4768a410c32632a512db4a91084a32"
+    },
+    {
+      "relative_path": "Data/engine/config/base/animation.ini",
+      "bytes": 582,
+      "sha256": "19631fb52b913370f32252eeac5abf4f42b4a2fdad87c6d7e4becddc335f3cb3"
+    },
+    {
+      "relative_path": "Data/engine/config/base/general.ini",
+      "bytes": 61,
+      "sha256": "f7b7cedbfcb838de7903488c85470235006c6bcc940a09463f9a4e3823bd50ef"
+    },
+    {
+      "relative_path": "Data/engine/config/base/multiplayer.ini",
+      "bytes": 374,
+      "sha256": "1e1211c0fd781f50bbf685d262a27dd547348ff9e8b4ecfb603647e033058a51"
+    },
+    {
+      "relative_path": "Data/engine/config/base/rendering.ini",
+      "bytes": 42,
+      "sha256": "86b8d29c873322b30aa04a6d8fcc276a9bf4f78125dcc58277311930281a2143"
+    },
+    {
+      "relative_path": "Data/engine/config/base/resources.ini",
+      "bytes": 46,
+      "sha256": "18922be81061cd0fb66952088ef5c137213c4544aea62f6db04b222600c0942a"
+    },
+    {
+      "relative_path": "Data/engine/config/base/scenesystem.ini",
+      "bytes": 886,
+      "sha256": "b97098c2541dda15523239360e9f0e861b752d2ec7d5c9dc110d4b273bd5055c"
+    },
+    {
+      "relative_path": "Data/engine/config/base/smartobjects.ini",
+      "bytes": 98,
+      "sha256": "8e7c884b2adbfc64456c29c02d8cfd41a98cad74793cd06e18dcaa2e1b3c6cad"
+    },
+    {
+      "relative_path": "Data/engine/config/galaxy/pc/REDGalaxyPeer_default.json",
+      "bytes": 369,
+      "sha256": "42aecfc21b3f203cdc6f4637959af4b81e0b79afa910372b4f2a477372adc87d"
+    },
+    {
+      "relative_path": "Data/engine/config/galaxy/pc_launcher/REDGalaxyPeer_default.json",
+      "bytes": 397,
+      "sha256": "a8d73ccbcac0e19178a94d424ea0fe95d2268f2b19798828988be96c5d72a9d9"
+    },
+    {
+      "relative_path": "Data/engine/config/giweights.json",
+      "bytes": 131,
+      "sha256": "a84714401155ea4af4fdafee0c7a0febf3e88e54073da79f685d18fb1b006993"
+    },
+    {
+      "relative_path": "Data/engine/config/platform/mac/gameservices.ini",
+      "bytes": 93,
+      "sha256": "d12a8876e46815c2d66200b64b764fee53a294e8d887881c5cee91380527d8c6"
+    },
+    {
+      "relative_path": "Data/engine/config/platform/mac/platformgameplay.ini",
+      "bytes": 125,
+      "sha256": "0ac56d1426c2672b06c801eb23e483c71ea62190d3acb45e9a1401706c193fc2"
+    },
+    {
+      "relative_path": "Data/engine/config/platform/mac/rendering.ini",
+      "bytes": 44,
+      "sha256": "32fd1f5cdeb64325bc0e38c1a55a161e6dd8b551001f6f793ac1056986f968df"
+    },
+    {
+      "relative_path": "Data/engine/shadermetal_final.cache",
+      "bytes": 262751921,
+      "sha256": "f904a98317c352bc0c65e35255e0f3808acab8f5cadd7e1f4eb885f7dcc1a4d1"
+    },
+    {
+      "relative_path": "Data/engine/staticshadermetal_final.cache",
+      "bytes": 18839907,
+      "sha256": "378858519d41ea879e52bc94dfe1e3ff178092a80baedf1c09ac9d616f9d340b"
+    },
+    {
+      "relative_path": "Data/engine/staticshadermetalnative.cache",
+      "bytes": 32,
+      "sha256": "83ccb7118e5d3d88c2e6d18edcec28b81bbed06665b4446e28e1af497212c2ab"
+    },
+    {
+      "relative_path": "Data/engine/staticshadermetalnative_final.cache",
+      "bytes": 32,
+      "sha256": "83ccb7118e5d3d88c2e6d18edcec28b81bbed06665b4446e28e1af497212c2ab"
+    },
+    {
+      "relative_path": "Data/engine/staticshadermsl.metallib",
+      "bytes": 34928,
+      "sha256": "34198c4b7a5daabf3c29503059a528c1825b31904c087b68dfd35946da665e40"
+    },
+    {
+      "relative_path": "Data/r6/cache/final.redscripts",
+      "bytes": 16161941,
+      "sha256": "cf641ada822a7cbb7bc8ebdfe48b1ee9afe2c12f25bf9d1ca0af87d95b71e3a1"
+    },
+    {
+      "relative_path": "Data/r6/cache/tweakdb.bin",
+      "bytes": 42005504,
+      "sha256": "265894666c82445badea2872fb7abe3aa632692d0829c3e88a7496a171b8171e"
+    },
+    {
+      "relative_path": "Data/r6/cache/tweakdb_ep1.bin",
+      "bytes": 48170218,
+      "sha256": "851588aab0662f8c3cd0129a565a8899d979769fb2178b626d64c09b869a3e26"
+    },
+    {
+      "relative_path": "Data/r6/config/bumpersSettings.json",
+      "bytes": 75,
+      "sha256": "617b927fad3f2366b5fe3603118c00717a4e81f26448fc8aede9e01bdc6cce00"
+    },
+    {
+      "relative_path": "Data/r6/config/inputContexts.xml",
+      "bytes": 103219,
+      "sha256": "9130124230e53d5d1ca094795c4794904f041b275ef2a8cfdd65eb2d6a43c6f3"
+    },
+    {
+      "relative_path": "Data/r6/config/inputContexts_mac.xml",
+      "bytes": 106280,
+      "sha256": "8253280a843d5889f10921148fae734fc826d0d540b3b7faf907dad89f695386"
+    },
+    {
+      "relative_path": "Data/r6/config/inputDeadzones.xml",
+      "bytes": 1375,
+      "sha256": "e7b232ad37b6cfe5fa13c3e879348af0cf64988db9f30eddacbb1bb50b93fe38"
+    },
+    {
+      "relative_path": "Data/r6/config/inputUserMappings.xml",
+      "bytes": 74062,
+      "sha256": "a57bd58879f3846f300ec9c30fc8111890b9d3aeb6b82842dc4070930e0ff48e"
+    },
+    {
+      "relative_path": "Data/r6/config/settings/options.json",
+      "bytes": 94643,
+      "sha256": "88395399572f279fe2a33abe801cb0d2f5c3cf51a2e0000a99925ef6f4336528"
+    },
+    {
+      "relative_path": "Data/r6/config/settings/platform/mac/options.json",
+      "bytes": 100174,
+      "sha256": "af1e7590503380f0c33124becd0c94d61c37b2a5b222fab527cbc12d5a65276b"
+    },
+    {
+      "relative_path": "Data/r6/config/uiInputActions.xml",
+      "bytes": 813,
+      "sha256": "0c70f99546b06c4d5f6900174ac0c4c53eeaf42f88a42af967f62d3174ccd532"
+    },
+    {
+      "relative_path": "Data/r6/publishing/mac/appstore/additional-content/addonDescriptions.xml",
+      "bytes": 804,
+      "sha256": "8eda0a1f5691cf7be5e50890faa600f0f0484035d91e88fb92dc34a9929511f3"
+    },
+    {
+      "relative_path": "Data/r6/publishing/mac/null/additional-content/addonDescriptions.xml",
+      "bytes": 525,
+      "sha256": "b676d75558ad309da4e4f831360f74da7ffba569c20bcd3a386a3764fd87a883"
+    }
+  ]
+}

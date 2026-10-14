@@ -73,3 +73,14 @@
 !/cyberpunk-avp/resumable/Resources/
 /cyberpunk-avp/resumable/Resources/*
 !/cyberpunk-avp/resumable/Resources/asset-manifest.json
+
+# Per-user pipeline state must live outside this checkout.
+/.superpowers/
+/.venv/
+**/DeviceDiagnostics/
+**/ReceiverBuild/
+**/receipts/
+**/transfer-owner.json
+**/installed-device.json
+**/background-transfer-plan.json
+**/private-report*.json

@@ -16,7 +16,7 @@ This runs in a native visionOS window. Stereo VR, headset pose and spatial contr
 
 Authored compatibility adapters, native host and loader source, resumable transfer tools, source-only simulator checks, sanitized checkpoint evidence and the website's static source/Kubernetes deployment. See [CHECKPOINT.md](CHECKPOINT.md) for the exact source and restore boundaries, and [site/README.md](site/README.md) for deployment details.
 
-Game executables/assets, proprietary frameworks, original game configuration files, signing keys and compiled apps are not included. Bring your own compatible game copy. The current checkpoint still depends on locally prepared external frameworks and is not a self-contained fresh-machine build. Use your own signing team when building; the retained project specs document the tested local setup.
+Game executables/assets, proprietary frameworks, original game configuration files, signing keys and compiled apps are not included. Bring your own compatible game copy. The new [native automation pipeline](docs/automation.md) prepares the exact supported inputs and builds providers from source in a private workspace. Fresh local preparation and unsigned builds are verified; a normally provisioned build and independent headset installation through the new CLI remain pending. Use your own signing team.
 
 ## Development milestones
 
