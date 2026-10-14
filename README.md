@@ -14,7 +14,7 @@ This runs in a native visionOS window. Stereo VR, headset pose and spatial contr
 
 ## What this repository contains
 
-Authored compatibility adapters, native host and loader source, resumable transfer tools, source-only simulator checks and sanitized checkpoint evidence. See [CHECKPOINT.md](CHECKPOINT.md) for the exact source and restore boundaries. Website source, News and deployment live separately in [visirupt-site](https://github.com/johnrtipton/visirupt-site); Cyberpunk setup and research live in [visirupt-cyberpunk](https://github.com/johnrtipton/visirupt-cyberpunk).
+Authored compatibility adapters, native host and loader source, resumable transfer tools, source-only simulator checks and sanitized checkpoint evidence. See [CHECKPOINT.md](CHECKPOINT.md) for the exact source and restore boundaries. The [website and News](https://visirupt.com/news.html) are maintained separately in the private `visirupt-site` repository. Cyberpunk setup and research live in [visirupt-cyberpunk](https://github.com/johnrtipton/visirupt-cyberpunk).
 
 Game executables/assets, proprietary frameworks, original game configuration files, signing keys and compiled apps are not included. Bring your own compatible game copy. The new [native automation pipeline](docs/automation.md) prepares the exact supported inputs and builds providers from source in a private workspace. Fresh local preparation and unsigned builds are verified; a normally provisioned build and independent headset installation through the new CLI remain pending. Use your own signing team.
 
